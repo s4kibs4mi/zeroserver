@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"io/ioutil"
 	"github.com/s4kibs4mi/zeroserver/log"
+	"io/ioutil"
 )
 
 var router = chi.NewRouter()
@@ -45,12 +45,12 @@ func Router() http.Handler {
 
 		resp := response{
 			code: http.StatusOK,
-			Data: "Ok",
+			Data: "OK",
 		}
 		resp.ServeJSON(w)
 	})
 
-	router.Post("/acl", func(w http.ResponseWriter, r *http.Request) {
+	router.Post("/check_pub", func(w http.ResponseWriter, r *http.Request) {
 		b, _ := ioutil.ReadAll(r.Body)
 		log.Logger().Infoln(string(b))
 		log.Logger().Infoln(r.Header)
@@ -58,6 +58,20 @@ func Router() http.Handler {
 		resp := response{
 			code: http.StatusOK,
 			Data: "Unauthorized",
+		}
+		resp.ServeJSON(w)
+	})
+
+	router.Post("/check_sub", func(w http.ResponseWriter, r *http.Request) {
+		b, _ := ioutil.ReadAll(r.Body)
+		log.Logger().Infoln(string(b))
+		log.Logger().Infoln(r.Header)
+
+		resp := response{
+			code: http.StatusOK,
+			Data: object{
+				"hash": "11111111111",
+			},
 		}
 		resp.ServeJSON(w)
 	})
